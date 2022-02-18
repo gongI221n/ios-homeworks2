@@ -21,15 +21,12 @@ class PostViewController: UIViewController {
         let infoBarItem = UIBarButtonItem(title: "Info", style: .plain, target: self, action: #selector(openInfo))
         
         navigationItem.rightBarButtonItem = infoBarItem
-//        tabBarController?.tabBar.isHidden = true
     }
     
     @objc func openInfo() {
         let infoVC = InfoViewController()
         navigationController?.present(infoVC, animated: true)
+
     }
 }
 
-//func tabBarIsHidden() {
-//    guard let post = PostViewController() else { return }
-//}

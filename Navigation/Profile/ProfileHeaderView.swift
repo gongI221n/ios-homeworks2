@@ -47,7 +47,7 @@ class ProfileHeaderView: UIView {
         statusButton.layer.shadowOffset = CGSize(width: 4, height: 4)
         statusButton.layer.shadowOpacity = 0.7
         statusButton.setTitle("Set Status", for: .normal)
-        statusButton.tintColor = .white
+        statusButton.setTitleColor(.lightGray, for: .normal)
         statusButton.addTarget(self, action: #selector(pressButton), for: .touchUpInside)
         
         return statusButton
@@ -115,10 +115,17 @@ class ProfileHeaderView: UIView {
     }
     
     
-    //MARK: TF Action
+    //MARK: TF Action. Button isEnabled
     @objc func statusTextChanged(_ textField: UITextField) {
         guard let text = textField.text else { return }
         statusText = text
+        if statusTF.text?.isEmpty == false {
+            statusButton.isEnabled = true
+            statusButton.setTitleColor(.white, for: .normal)
+        } else {
+            statusButton.isEnabled = false
+            statusButton.setTitleColor(.lightGray, for: .normal)
+        }
     }
     
     // MARK: Button Action

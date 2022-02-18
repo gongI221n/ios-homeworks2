@@ -31,12 +31,17 @@ class FeedViewController: UIViewController {
         view.addSubview(postButton)
         
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = false
+    }
 
     // Метод для кнопки
     @objc func openPost() {
         let postVC = PostViewController()
         navigationController?.pushViewController(postVC, animated: true)
         postVC.postTitle = post.title
+        tabBarController?.tabBar.isHidden = true
     }
     
     
