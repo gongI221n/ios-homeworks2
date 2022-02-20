@@ -18,7 +18,7 @@ class FeedViewController: UIViewController {
         super.viewDidLoad()
         
         self.title = "Feed"
-        view.backgroundColor = .systemOrange
+        view.backgroundColor = .white
         
         //Button
         postButton = UIButton(frame: CGRect(x: view.frame.width/2-100, y: view.frame.height/2-25, width: 200, height: 50))
@@ -29,6 +29,11 @@ class FeedViewController: UIViewController {
         postButton.addTarget(self, action: #selector(openPost), for: .touchUpInside)
 
         view.addSubview(postButton)
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tabBarController?.tabBar.isHidden = false
     }
 
     // Метод для кнопки
@@ -36,6 +41,7 @@ class FeedViewController: UIViewController {
         let postVC = PostViewController()
         navigationController?.pushViewController(postVC, animated: true)
         postVC.postTitle = post.title
+        tabBarController?.tabBar.isHidden = true
     }
     
     

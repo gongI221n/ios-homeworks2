@@ -20,7 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let feedVC = FeedViewController()
         let ProfileVC = ProfileViewController()
         let postVC = PostViewController()
-        postVC.title = "Orange"
         
         
         //Navigation VC
@@ -30,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Создаю tabBar
         let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [profileNavigationVC, feedNavigationVC] // Помещаю в tabBar VC
+        tabBarController.viewControllers = [feedNavigationVC, profileNavigationVC] // Помещаю в tabBar VC
 //        tabBarController.selectedIndex = 0
         
         

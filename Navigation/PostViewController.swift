@@ -8,7 +8,7 @@
 import UIKit
 
 class PostViewController: UIViewController {
-
+    
     var postTitle: String?
     
     override func viewDidLoad() {
@@ -22,9 +22,11 @@ class PostViewController: UIViewController {
         
         navigationItem.rightBarButtonItem = infoBarItem
     }
-
+    
     @objc func openInfo() {
         let infoVC = InfoViewController()
         navigationController?.present(infoVC, animated: true)
+
     }
 }
+
