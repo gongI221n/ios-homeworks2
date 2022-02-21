@@ -14,13 +14,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        window = UIWindow()
+        window = UIWindow(frame: UIScreen.main.bounds)
         
         // VC
         let feedVC = FeedViewController()
+        feedVC.view.backgroundColor = .white
         let ProfileVC = ProfileViewController()
-        let postVC = PostViewController()
-        
+        let postVC = PostViewController()        
         
         //Navigation VC
         let feedNavigationVC = UINavigationController(rootViewController: feedVC)
@@ -39,6 +39,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
+        
+        let appearance = UINavigationBarAppearance()
+                appearance.configureWithOpaqueBackground()
+                appearance.backgroundColor = UIColor.systemGray5
+        
+        feedNavigationVC.navigationBar.standardAppearance = appearance
+        feedNavigationVC.navigationBar.scrollEdgeAppearance = feedNavigationVC.navigationBar.standardAppearance
+        
+        profileNavigationVC.navigationBar.standardAppearance = appearance
+        profileNavigationVC.navigationBar.scrollEdgeAppearance = profileNavigationVC.navigationBar.standardAppearance
 
         return true
     }

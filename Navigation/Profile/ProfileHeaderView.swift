@@ -14,7 +14,7 @@ class ProfileHeaderView: UIView {
     // MARK: Avatar image
     var avatar: UIImageView = {
         let avatar = UIImageView()
-        avatar.translatesAutoresizingMaskIntoConstraints = false
+        avatar.toAutoLayout()
         avatar.clipsToBounds = true
         avatar.image = UIImage(named: "avatar")
         avatar.layer.cornerRadius = 75
@@ -23,12 +23,12 @@ class ProfileHeaderView: UIView {
         
         return avatar
     }()
-    
+        
     
     //MARK: Name Label
     var nameLabel: UILabel = {
         let nameLabel = UILabel()
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.toAutoLayout()
         nameLabel.clipsToBounds = true
         nameLabel.text = "Chaschin Ivan"
         nameLabel.textColor = .black
@@ -40,7 +40,7 @@ class ProfileHeaderView: UIView {
     //MARK: Status button
     var statusButton: UIButton = {
         let statusButton = UIButton()
-        statusButton.translatesAutoresizingMaskIntoConstraints = false
+        statusButton.toAutoLayout()
         statusButton.backgroundColor = .systemBlue
         statusButton.layer.cornerRadius = 4
         statusButton.layer.shadowColor = UIColor.black.cgColor
@@ -56,7 +56,7 @@ class ProfileHeaderView: UIView {
     //MARK: Status Label
     var statusLabel: UILabel = {
         let statusLabel = UILabel()
-        statusLabel.translatesAutoresizingMaskIntoConstraints = false
+        statusLabel.toAutoLayout()
         statusLabel.text = "Waiting for something"
         statusLabel.numberOfLines = 2
         statusLabel.textColor = .gray
@@ -69,7 +69,7 @@ class ProfileHeaderView: UIView {
     //MARK: Text Field for status setting
     var statusTF: UITextField = {
         let statusTF = UITextField()
-        statusTF.translatesAutoresizingMaskIntoConstraints = false
+        statusTF.toAutoLayout()
         statusTF.layer.borderWidth = 1
         statusTF.layer.borderColor = UIColor.black.cgColor
         statusTF.layer.cornerRadius = 12
@@ -80,10 +80,11 @@ class ProfileHeaderView: UIView {
         statusTF.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: statusTF.frame.height))
         statusTF.leftViewMode = .always
         statusTF.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
-        
+        statusTF.returnKeyType = .done
         
         return statusTF
     }()
+    
     
     // MARK: Constraints
     func SetupConstraints() {
@@ -109,7 +110,7 @@ class ProfileHeaderView: UIView {
             statusTF.leftAnchor.constraint(equalTo: avatar.rightAnchor, constant: 20),
             statusTF.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 16),
             statusTF.rightAnchor.constraint(greaterThanOrEqualTo: self.rightAnchor, constant: -16),
-            statusTF.heightAnchor.constraint(equalToConstant: 40)
+            statusTF.heightAnchor.constraint(equalToConstant: 40),
         ])
         
     }
@@ -122,6 +123,7 @@ class ProfileHeaderView: UIView {
         if statusTF.text?.isEmpty == false {
             statusButton.isEnabled = true
             statusButton.setTitleColor(.white, for: .normal)
+            
         } else {
             statusButton.isEnabled = false
             statusButton.setTitleColor(.lightGray, for: .normal)
@@ -138,13 +140,11 @@ class ProfileHeaderView: UIView {
         
     }
     
+    
     // MARK: Add Subviews
     func addView() {
-        addSubview(avatar)
-        addSubview(nameLabel)
-        addSubview(statusButton)
-        addSubview(statusLabel)
-        addSubview(statusTF)
+        addSubviews(avatar, nameLabel, statusButton, statusLabel, statusTF)
+        
     }
     
     // MARK: Создание Toolbar и кнопки на нем "Готово"
@@ -159,7 +159,7 @@ class ProfileHeaderView: UIView {
                                          action: #selector(dismissKeyboard))
         
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil) // "Невидимое пространство для смещения кнопки "Готово" к правому краю
-
+        
         toolbar.setItems([flexibleSpace, doneButton], animated: true) // Размещение кнопок из массива в toolbar
         toolbar.isUserInteractionEnabled = true // Позволяем взаимодействовать пользователю с данным элементом
         
@@ -170,5 +170,18 @@ class ProfileHeaderView: UIView {
     @objc func dismissKeyboard() { // Метод скрытия клавиатуры по нажатию на кнопку Готово
         self.endEditing(true)
     }
+    
+    
 }
 
+public extension UIView {
+    
+    func toAutoLayout() {
+        translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    func addSubviews(_ subviews: UIView...) {
+        subviews.forEach { addSubview($0) }
+    }
+    
+}
