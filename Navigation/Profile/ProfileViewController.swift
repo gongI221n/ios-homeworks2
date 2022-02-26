@@ -11,6 +11,20 @@ class ProfileViewController: UIViewController {
     
     var profileHeaderView = ProfileHeaderView()
     
+    // MARK: Button set title
+    var buttonTitle: UIButton = {
+        let buttonTitle = UIButton()
+        buttonTitle.toAutoLayout()
+        buttonTitle.backgroundColor = .systemBlue
+        buttonTitle.setTitle("Set title", for: .normal)
+        buttonTitle.setTitleColor(.white, for: .normal)
+        buttonTitle.addTarget(self, action: #selector(pressButton), for: .touchUpInside)
+        
+        
+        return buttonTitle
+        
+    }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,18 +35,25 @@ class ProfileViewController: UIViewController {
         profileHeaderView.addView() // Добавление всех View
         profileHeaderView.SetupConstraints() // Добавление констрейнтов
         profileHeaderView.createToolbar() // Добавление Toolbar
+        profileHeaderView.toAutoLayout()
+        view.addSubview(buttonTitle)
+        setHeaderConstraints()
         
         
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+    func setHeaderConstraints() {
         profileHeaderView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             profileHeaderView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
             profileHeaderView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
             profileHeaderView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            profileHeaderView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
+            profileHeaderView.heightAnchor.constraint(equalToConstant: 220),
+            
+            buttonTitle.leftAnchor.constraint(equalTo: view.leftAnchor),
+            buttonTitle.rightAnchor.constraint(equalTo: view.rightAnchor),
+            buttonTitle.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            buttonTitle.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     
@@ -42,5 +63,10 @@ class ProfileViewController: UIViewController {
             }
     
     
+    @objc func pressButton() {
+        self.title = "New title"
+    }
+    
 }
+
 

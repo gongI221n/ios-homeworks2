@@ -15,8 +15,7 @@ class PostViewController: UIViewController {
         super.viewDidLoad()
         
         self.title = postTitle
-        view.backgroundColor = .systemTeal
-        
+        view.backgroundColor = .lightGray
         // Кнопка Инфо для перехода на infoVC
         let infoBarItem = UIBarButtonItem(title: "Info", style: .plain, target: self, action: #selector(openInfo))
         

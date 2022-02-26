@@ -14,21 +14,47 @@ class FeedViewController: UIViewController {
     
     let post = Post(title: "First post")
     
+    var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.toAutoLayout()
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+        stackView.spacing = 10
+        
+        return stackView
+    }()
+    
+    
+    var firstItem: UIButton = {
+        let firstItem = UIButton()
+        firstItem.toAutoLayout()
+        firstItem.setImage(UIImage(named: "Bear"), for: .normal)
+        firstItem.addTarget(self, action: #selector(openPost), for: .touchUpInside)
+        firstItem.imageView?.contentMode = .scaleAspectFill
+        
+        return firstItem
+    }()
+    
+    
+    var secondItem: UIButton = {
+        let secondItem = UIButton()
+        secondItem.toAutoLayout()
+        secondItem.setImage(UIImage(named: "Boston"), for: .normal)
+        secondItem.addTarget(self, action: #selector(openPost), for: .touchUpInside)
+        
+        return secondItem
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.title = "Feed"
-        view.backgroundColor = .white
-        
-        //Button
-        postButton = UIButton(frame: CGRect(x: view.frame.width/2-100, y: view.frame.height/2-25, width: 200, height: 50))
-        postButton.layer.cornerRadius = 10
-        postButton.backgroundColor = .systemBlue
-        postButton.setTitle("Post", for: .normal)
-        
-        postButton.addTarget(self, action: #selector(openPost), for: .touchUpInside)
-
-        view.addSubview(postButton)
+        view.addSubview(stackView)
+        stackView.addArrangedSubview(firstItem)
+        stackView.addArrangedSubview(secondItem)
+        setStackViewConstraints()
         
     }
     
@@ -44,6 +70,15 @@ class FeedViewController: UIViewController {
         tabBarController?.tabBar.isHidden = true
     }
     
-    
+    private func setStackViewConstraints() {
+        NSLayoutConstraint.activate([
+            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            stackView.widthAnchor.constraint(equalToConstant: view.bounds.width),
+            stackView.heightAnchor.constraint(equalToConstant: view.bounds.height),
+            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+        ])
+    }
     
 }
