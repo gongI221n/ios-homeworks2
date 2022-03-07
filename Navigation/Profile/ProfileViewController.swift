@@ -10,63 +10,82 @@ import UIKit
 class ProfileViewController: UIViewController {
     
     var profileHeaderView = ProfileHeaderView()
-    
-    // MARK: Button set title
-    var buttonTitle: UIButton = {
-        let buttonTitle = UIButton()
-        buttonTitle.toAutoLayout()
-        buttonTitle.backgroundColor = .systemBlue
-        buttonTitle.setTitle("Set title", for: .normal)
-        buttonTitle.setTitleColor(.white, for: .normal)
-        buttonTitle.addTarget(self, action: #selector(pressButton), for: .touchUpInside)
-        
-        
-        return buttonTitle
-        
-    }()
-    
+    var logInVC = LogInViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.title = "Profile"
-        view.backgroundColor = .lightGray
-        view.addSubview(profileHeaderView)
-        profileHeaderView.addView() // Добавление всех View
-        profileHeaderView.SetupConstraints() // Добавление констрейнтов
-        profileHeaderView.createToolbar() // Добавление Toolbar
-        profileHeaderView.toAutoLayout()
-        view.addSubview(buttonTitle)
-        setHeaderConstraints()
+        view.backgroundColor = .white
+        view.addSubview(postTableView)
+        postTableView.dataSource = self
+        postTableView.delegate = self
+        postTableView.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.identifire)
+        postTableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: ProfileHeaderView.identifire)
+        setupConstraints()
+        navigationController?.pushViewController(logInVC, animated: false)
+        
         
         
     }
+//
     
-    func setHeaderConstraints() {
-        profileHeaderView.translatesAutoresizingMaskIntoConstraints = false
+    private lazy var postTableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.toAutoLayout()
+        tableView.isScrollEnabled = true
+        tableView.separatorInset = .zero
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
+        tableView.estimatedSectionHeaderHeight = 220
+        return tableView
+    }()
+    
+    func setupConstraints() {
         NSLayoutConstraint.activate([
-            profileHeaderView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-            profileHeaderView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-            profileHeaderView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            profileHeaderView.heightAnchor.constraint(equalToConstant: 220),
-            
-            buttonTitle.leftAnchor.constraint(equalTo: view.leftAnchor),
-            buttonTitle.rightAnchor.constraint(equalTo: view.rightAnchor),
-            buttonTitle.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            buttonTitle.heightAnchor.constraint(equalToConstant: 50)
+            postTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            postTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            postTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            postTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+
         ])
-    }
-    
-    // Метод скрытия клавиатуры по тапу на экран.
-        override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-                self.view.endEditing(true)
-            }
-    
-    
-    @objc func pressButton() {
-        self.title = "New title"
+        
     }
     
 }
 
-
+extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        posts.count
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = postTableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifire, for: indexPath) as! PostTableViewCell
+        cell.configureCell(title: posts[indexPath.row].title,
+                           image: posts[indexPath.row].image,
+                           description: posts[indexPath.row].description,
+                           likes: posts[indexPath.row].likes,
+                           views: posts[indexPath.row].views)
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 0 {
+            let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: ProfileHeaderView.identifire) as! ProfileHeaderView
+            return header
+        } else {
+            return nil
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 220
+    }
+    
+}

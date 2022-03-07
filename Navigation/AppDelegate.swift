@@ -20,7 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let feedVC = FeedViewController()
         feedVC.view.backgroundColor = .white
         let ProfileVC = ProfileViewController()
-        let postVC = PostViewController()        
+        let postVC = PostViewController()
+        let logInVC = LogInViewController()
         
         //Navigation VC
         let feedNavigationVC = UINavigationController(rootViewController: feedVC)

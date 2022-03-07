@@ -12,9 +12,9 @@ class FeedViewController: UIViewController {
     
     var postButton = UIButton()
     
-    let post = Post(title: "First post")
+//    let post = Post1(title: "First post")
     
-    var stackView: UIStackView = {
+    private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.toAutoLayout()
         stackView.axis = .vertical
@@ -26,7 +26,7 @@ class FeedViewController: UIViewController {
     }()
     
     
-    var firstItem: UIButton = {
+    private lazy var firstItem: UIButton = {
         let firstItem = UIButton()
         firstItem.toAutoLayout()
         firstItem.setImage(UIImage(named: "Bear"), for: .normal)
@@ -37,7 +37,7 @@ class FeedViewController: UIViewController {
     }()
     
     
-    var secondItem: UIButton = {
+    private lazy var secondItem: UIButton = {
         let secondItem = UIButton()
         secondItem.toAutoLayout()
         secondItem.setImage(UIImage(named: "Boston"), for: .normal)
@@ -66,7 +66,7 @@ class FeedViewController: UIViewController {
     @objc func openPost() {
         let postVC = PostViewController()
         navigationController?.pushViewController(postVC, animated: true)
-        postVC.postTitle = post.title
+//        postVC.postTitle = post.title
         tabBarController?.tabBar.isHidden = true
     }
     
