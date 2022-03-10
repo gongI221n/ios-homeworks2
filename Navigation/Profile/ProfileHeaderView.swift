@@ -26,7 +26,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         avatar.toAutoLayout()
         avatar.clipsToBounds = true
         avatar.image = UIImage(named: "avatar")
-        avatar.layer.cornerRadius = 75
+        avatar.layer.cornerRadius = 60
         avatar.layer.borderWidth = 3
         avatar.layer.borderColor = CGColor(red: 255, green: 255, blue: 255, alpha: 1)
         
@@ -98,7 +98,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     // MARK: Constraints
     func SetupConstraints() {
         NSLayoutConstraint.activate([
-            avatar.widthAnchor.constraint(equalToConstant: 150),
+            avatar.widthAnchor.constraint(equalToConstant: 120),
             avatar.heightAnchor.constraint(equalTo: avatar.widthAnchor),
             avatar.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16),
             avatar.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
