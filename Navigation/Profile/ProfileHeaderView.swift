@@ -7,12 +7,21 @@
 
 import UIKit
 
-class ProfileHeaderView: UIView {
+class ProfileHeaderView: UITableViewHeaderFooterView {
     
     private var statusText: String = ""
     
+    static let identifire = "ProfileHeaderView"
+    
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+        contentView.addSubviews(avatar, nameLabel, statusButton, statusLabel, statusTF)
+        SetupConstraints()
+    }
+    
+    
     // MARK: Avatar image
-    var avatar: UIImageView = {
+    private lazy var avatar: UIImageView = {
         let avatar = UIImageView()
         avatar.toAutoLayout()
         avatar.clipsToBounds = true
@@ -23,10 +32,10 @@ class ProfileHeaderView: UIView {
         
         return avatar
     }()
-        
+    
     
     //MARK: Name Label
-    var nameLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         let nameLabel = UILabel()
         nameLabel.toAutoLayout()
         nameLabel.clipsToBounds = true
@@ -38,7 +47,7 @@ class ProfileHeaderView: UIView {
     }()
     
     //MARK: Status button
-    var statusButton: UIButton = {
+    private lazy var statusButton: UIButton = {
         let statusButton = UIButton()
         statusButton.toAutoLayout()
         statusButton.backgroundColor = .systemBlue
@@ -54,7 +63,7 @@ class ProfileHeaderView: UIView {
     }()
     
     //MARK: Status Label
-    var statusLabel: UILabel = {
+    private lazy var statusLabel: UILabel = {
         let statusLabel = UILabel()
         statusLabel.toAutoLayout()
         statusLabel.text = "Waiting for something"
@@ -67,7 +76,7 @@ class ProfileHeaderView: UIView {
     }()
     
     //MARK: Text Field for status setting
-    var statusTF: UITextField = {
+    private lazy var statusTF: UITextField = {
         let statusTF = UITextField()
         statusTF.toAutoLayout()
         statusTF.layer.borderWidth = 1
@@ -171,6 +180,9 @@ class ProfileHeaderView: UIView {
         self.endEditing(true)
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
 }
 
@@ -185,3 +197,6 @@ public extension UIView {
     }
     
 }
+
+
+
