@@ -24,7 +24,7 @@ class ProfileViewController: UIViewController {
         ProfileViewController.postTableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: ProfileHeaderView.identifire)
         ProfileViewController.postTableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: PhotosTableViewCell.identifire)
         setupConstraints()
-//        navigationController?.pushViewController(logInVC, animated: false)
+        navigationController?.pushViewController(logInVC, animated: false)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -32,14 +32,6 @@ class ProfileViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
     
-//    public lazy var view1: UIView = {
-//       let view = UIView()
-//        view.toAutoLayout()
-//        view.alpha = 0
-//        view.backgroundColor = .systemGray
-//
-//        return view
-//    }()
     
     static var postTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -58,11 +50,6 @@ class ProfileViewController: UIViewController {
             ProfileViewController.postTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             ProfileViewController.postTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             ProfileViewController.postTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            
-//            view1.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-//            view1.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
-//            view1.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor),
-//            view1.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor),
 
         ])
         
