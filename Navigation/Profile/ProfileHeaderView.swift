@@ -10,15 +10,51 @@ import UIKit
 class ProfileHeaderView: UITableViewHeaderFooterView {
     
     private var statusText: String = ""
-    
     static let identifire = "ProfileHeaderView"
+//    var defaultAvatarCenter: CGPoint = CGPoint(x: 0, y: 0)
+    
+    var avatarWidthConstraint: NSLayoutConstraint!
+    var avatarHeightConstraint: NSLayoutConstraint!
+    var avatarXConstraint: NSLayoutConstraint!
+    var avatarYConstraint: NSLayoutConstraint!
+    var avatarLeftConstraint: NSLayoutConstraint!
+    var avatarTopConstraint: NSLayoutConstraint!
+    
+    var avatarNewWidthConstraint: NSLayoutConstraint!
+    var avatarNewHeightConstraint: NSLayoutConstraint!
+
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-        contentView.addSubviews(avatar, nameLabel, statusButton, statusLabel, statusTF)
+        contentView.addSubviews(nameLabel, statusButton, statusLabel, statusTF, plagView, plagEscButton, avatar)
         SetupConstraints()
     }
     
+    // MARK: plagView
+    private lazy var plagView: UIView = {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+        view.toAutoLayout()
+        view.alpha = 0
+        view.backgroundColor = .systemGray
+        view.isUserInteractionEnabled = false
+
+        return view
+    }()
+    
+    // MARK: plagEscButton
+    private lazy var plagEscButton: UIButton = {
+       let button = UIButton()
+        button.toAutoLayout()
+        button.setImage(UIImage(systemName: "xmark", withConfiguration: UIImage.SymbolConfiguration(pointSize: 40))?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+        button.backgroundColor = .clear
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(tapPlagEscButton))
+        button.addGestureRecognizer(gesture)
+        button.isUserInteractionEnabled = false
+        button.alpha = 0
+        
+        
+        return button
+    }()
     
     // MARK: Avatar image
     private lazy var avatar: UIImageView = {
@@ -29,6 +65,10 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         avatar.layer.cornerRadius = 60
         avatar.layer.borderWidth = 3
         avatar.layer.borderColor = CGColor(red: 255, green: 255, blue: 255, alpha: 1)
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(tapOnAvatar))
+        recognizer.numberOfTapsRequired = 1
+        avatar.addGestureRecognizer(recognizer)
+        avatar.isUserInteractionEnabled = true
         
         return avatar
     }()
@@ -93,22 +133,27 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         
         return statusTF
     }()
-    
-    
+
     // MARK: Constraints
     func SetupConstraints() {
+        
+        self.avatarWidthConstraint = self.avatar.widthAnchor.constraint(equalToConstant: 120)
+        self.avatarHeightConstraint = self.avatar.heightAnchor.constraint(equalTo: avatar.widthAnchor)
+        self.avatarLeftConstraint = self.avatar.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16)
+        self.avatarTopConstraint =  self.avatar.topAnchor.constraint(equalTo: self.topAnchor, constant: 16)
+        
         NSLayoutConstraint.activate([
-            avatar.widthAnchor.constraint(equalToConstant: 120),
-            avatar.heightAnchor.constraint(equalTo: avatar.widthAnchor),
-            avatar.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16),
-            avatar.topAnchor.constraint(equalTo: self.topAnchor, constant: 16),
+            avatarWidthConstraint,
+            avatarHeightConstraint,
+            avatarLeftConstraint,
+            avatarTopConstraint,
             
             nameLabel.leftAnchor.constraint(equalTo: avatar.rightAnchor, constant: 20),
             nameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 27),
             
             statusButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16),
             statusButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16),
-            statusButton.topAnchor.constraint(equalTo: avatar.bottomAnchor, constant: 16),
+            statusButton.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -64),
             statusButton.heightAnchor.constraint(equalToConstant: 50),
             
             statusLabel.leftAnchor.constraint(equalTo: avatar.rightAnchor, constant: 20),
@@ -120,6 +165,10 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
             statusTF.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 16),
             statusTF.rightAnchor.constraint(greaterThanOrEqualTo: self.rightAnchor, constant: -16),
             statusTF.heightAnchor.constraint(equalToConstant: 40),
+            
+            plagEscButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            plagEscButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
+            
         ])
         
     }
@@ -184,7 +233,82 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc func tapOnAvatar() {
+        UIImageView.animate(withDuration: 0.5) {
+            // Я знаю, что можно было сделать как ниже в комментах. Но я не совсем сначала понял как это изнутри делается (трансформ), так что решил через понятные мне констрейнты - в общем 3 вечера страдал и сделал вроде, но остались косяки в том, что привязанные к аватарке констрейнты уезжают за экран и это как бы видно. Я знаю как это исправить, но уже отправлю как есть.
+//            self.defaultAvatarCenter = self.avatar.center
+//            self.avatar.center = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)
+//            self.avatar.transform = CGAffineTransform(scaleX: self.contentView.frame.width / self.avatar.frame.width, y: self.contentView.frame.width / self.avatar.frame.width)
+            
+            self.avatar.layer.cornerRadius = 0
+            self.avatar.layer.borderWidth = 0
+            
+            self.avatarWidthConstraint = self.avatar.widthAnchor.constraint(equalTo: self.superview!.widthAnchor)
+            self.avatarHeightConstraint = self.avatar.heightAnchor.constraint(equalTo: self.superview!.widthAnchor)
+            self.avatarXConstraint = self.avatar.centerXAnchor.constraint(equalTo: self.superview!.centerXAnchor)
+            self.avatarYConstraint = self.avatar.centerYAnchor.constraint(equalTo: self.superview!.centerYAnchor)
+            
+            self.avatarNewWidthConstraint = self.avatar.widthAnchor.constraint(equalToConstant: 120)
+            self.avatarNewHeightConstraint = self.avatar.heightAnchor.constraint(equalTo: self.avatar.widthAnchor)
+            
+            NSLayoutConstraint.activate([self.avatarWidthConstraint,
+                                         self.avatarHeightConstraint,
+                                         self.avatarXConstraint,
+                                         self.avatarYConstraint])
+            
+            self.plagView.backgroundColor = .systemGray
+            self.plagView.alpha = 0.9
+            self.plagEscButton.isUserInteractionEnabled = true
+            ProfileViewController.postTableView.isScrollEnabled = false
+            ProfileViewController.postTableView.cellForRow(at: IndexPath(item: 0, section: 0))?.isUserInteractionEnabled = false
+            self.avatar.isUserInteractionEnabled = false
+            self.superview?.layoutIfNeeded()
+            
+        } completion: { _ in
+            UIImageView.animate(withDuration: 0.3) {
+                self.plagEscButton.alpha = 1
+
+            }
+        }
+    }
+    
+    @objc func tapPlagEscButton() {
+
+        UIImageView.animate(withDuration: 0.3) {
+            self.plagEscButton.alpha = 0
+            
+        } completion: { _ in
+            UIImageView.animate(withDuration: 0.5) {
+                
+                NSLayoutConstraint.deactivate([self.avatarWidthConstraint,
+                                               self.avatarHeightConstraint,
+                                               self.avatarXConstraint,
+                                               self.avatarYConstraint,
+                                               self.avatarTopConstraint,
+                                               self.avatarLeftConstraint
+                                              ])
+                
+                self.superview?.layoutIfNeeded()
+                
+                NSLayoutConstraint.activate([
+                    self.avatarNewWidthConstraint,
+                    self.avatarNewHeightConstraint,
+                    self.avatarLeftConstraint,
+                    self.avatarTopConstraint
+                ])
+                
+                self.avatar.layer.cornerRadius = self.avatar.frame.width / 2
+                self.avatar.layer.borderWidth = 3
+                self.plagView.alpha = 0
+                ProfileViewController.postTableView.isScrollEnabled = true
+                ProfileViewController.postTableView.cellForRow(at: IndexPath(item: 0, section: 0))?.isUserInteractionEnabled = true
+                self.avatar.isUserInteractionEnabled = true
+                self.superview?.layoutIfNeeded()
+            }
+        }
+    }
 }
+
 
 public extension UIView {
     
@@ -197,6 +321,8 @@ public extension UIView {
     }
     
 }
+
+
 
 
 

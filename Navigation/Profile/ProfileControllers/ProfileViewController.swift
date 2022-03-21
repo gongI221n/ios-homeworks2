@@ -17,12 +17,12 @@ class ProfileViewController: UIViewController {
         
         self.title = "Profile"
         view.backgroundColor = .white
-        view.addSubview(postTableView)
-        postTableView.dataSource = self
-        postTableView.delegate = self
-        postTableView.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.identifire)
-        postTableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: ProfileHeaderView.identifire)
-        postTableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: PhotosTableViewCell.identifire)
+        view.addSubview(ProfileViewController.postTableView)
+        ProfileViewController.postTableView.dataSource = self
+        ProfileViewController.postTableView.delegate = self
+        ProfileViewController.postTableView.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.identifire)
+        ProfileViewController.postTableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: ProfileHeaderView.identifire)
+        ProfileViewController.postTableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: PhotosTableViewCell.identifire)
         setupConstraints()
         navigationController?.pushViewController(logInVC, animated: false)
     }
@@ -32,7 +32,8 @@ class ProfileViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
     
-    private lazy var postTableView: UITableView = {
+    
+    static var postTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.toAutoLayout()
         tableView.isScrollEnabled = true
@@ -45,10 +46,10 @@ class ProfileViewController: UIViewController {
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            postTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            postTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            postTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            postTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+            ProfileViewController.postTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            ProfileViewController.postTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            ProfileViewController.postTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            ProfileViewController.postTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
 
         ])
         
@@ -74,7 +75,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.section == 1 {
-            let cell = postTableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifire, for: indexPath) as! PostTableViewCell
+            let cell = ProfileViewController.postTableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifire, for: indexPath) as! PostTableViewCell
             cell.configureCell(title: posts[indexPath.row].title,
                                image: posts[indexPath.row].image,
                                description: posts[indexPath.row].description,
